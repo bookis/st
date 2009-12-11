@@ -74,22 +74,16 @@ class SaversController < BaseController
 
     @order_by = session[:order_by]
     @order = session[:order]
-
-    unless params.has_key?(:asset_type_id) && params.has_key?(:metro_area_id)
-      params[:asset_type_id] = session[:asset_type_id]
-      params[:metro_area_id] = session[:metro_area_id]
-      params[:organization_id] = session[:organization_id]
-    else
-      session[:asset_type_id] = params[:asset_type_id]
-      session[:metro_area_id] = params[:metro_area_id]
-      session[:organization_id] = params[:organization_id]
-    end
+    
+    
+    @page = params[:page].to_i
+      
 
     cond, @search, @metro_areas, @states, @asset_types = Saver.paginated_users_conditions_with_search(params)
     @savers = Saver.find_active(:all,
       :conditions => cond.to_sql,
       :include => [:tags],
-      :page => {:current => params[:page], :size => 10},
+      :page => {:current => params[:page], :size => 2, :auto => true},
       :include => [:asset_type, :metro_area],
       :order => "#{@order_by} #{@order}"
       )    

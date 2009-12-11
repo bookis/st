@@ -29,8 +29,7 @@
 
     .pagination.upper
       = paginating_links @savers, :params => params if @savers.page_count > 1
-
     = render :partial => "savers/list", :locals => {:savers => @savers}
-
+		
     .pagination.lower
       = paginating_links @savers, :params => params if @savers.page_count > 1
